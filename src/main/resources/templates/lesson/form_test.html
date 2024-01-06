@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>入力</title>
+</head>
+<body>
+    <form th:action="@{/lesson/request_test}" th:object="${sampleForm}" th:method="post">
+        <div>
+            <label for="name">名前：</label> 
+            <input type="text" th:field="*{name}">
+        </div>
+        <div>
+            <label for="bloodType">年齢：</label>         
+            <input type="text" th:field="*{bloodType}">
+        </div>
+        <button type="submit">送信</button>
+    </form>
+</body>
+</html>
