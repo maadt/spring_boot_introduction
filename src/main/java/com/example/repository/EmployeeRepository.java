@@ -16,4 +16,3 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 	//JpaRepositoryを継承していることで、データの挿入(更新)、削除、単純なデータ取得のメソッドは継承したRepositoryでも定義せず利用可能。
     // データ呼び出し用のメソッドを定義します
 }
-//qqqq
