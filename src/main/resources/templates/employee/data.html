@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>1件取得</title>
+</head>
+<body>
+    <table th:object="${employee}">
+        <tr>
+            <th>ID</th>
+            <td th:text="*{id}"></td>
+        </tr>
+        <tr>
+            <th>従業員名</th>
+            <td th:text="*{name}"></td>
+        </tr>
+        <tr>
+            <th>部署</th>
+            <td th:text="*{department}"></td>
+        </tr>
+    </table>
+</body>
+</html>
+

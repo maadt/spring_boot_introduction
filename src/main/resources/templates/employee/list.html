@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>全件取得</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>従業員名</th>
+                <th>部署</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- ${employees}から１件ずつ取り出し、employeeに格納 -->
+            <tr th:each="employee : ${employees}">
+                <!-- employee内のフィールドを出力する -->
+                <td th:text="${employee.id}"></td>
+                <td th:text="${employee.name}"></td>
+                <td th:text="${employee.department}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
+
+<!-- 
+	<タグ1 th:each="ループ用変数 : ${コレクション}">
+        <タグ2 th:text="${ループ用変数.フィールド}"></タグ2>
+    </タグ1> 
+-->
