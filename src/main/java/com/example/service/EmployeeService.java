@@ -15,20 +15,20 @@ import com.example.repository.EmployeeRepository;
 @Service //Serviceクラスであることを示す。データの取得、加工や計算などシステムに必要な処理全般を実行する。
 
 public class EmployeeService {
-	
+
     private final EmployeeRepository employeeRepository; //インジェクションしたいフィールドを定義
     //private final Repository名 フィールド;
 
     @Autowired //引数に紐づくクラスのインスタンスを生成し、利用する
-    
+
     public EmployeeService(EmployeeRepository employeeRepository) { //コンストラクタ・インジェクション
     //public コンストラクタ名(Repository名 引数)
-    	
+
         this.employeeRepository = employeeRepository;
         //this.フィールド = 引数;
         //複数のRepositoryのインジェクションが必要なら合わせて引数やフィールドの数が増えます。
     }
-    
+
     // メソッド名はRepositoryの処理や最終的な返り値がわかるような名前にしましょう
     public List<Employee> findAllEmployee() {
     	//無条件なデータ検索となっているため、Entityクラスの複数取得を想定し返り値の型はList<Entityクラス>となっています。
@@ -36,7 +36,7 @@ public class EmployeeService {
         return this.employeeRepository.findAll();
         //findAll()...データを全件取得する。JpaRepositoryを継承しているRepositoryで呼び出せるメソッドの一つ。
     }
-    
+
     // 主キーでの1件検索
     public Employee findEmployee(Integer employeeId) {
         // データの1件取得
@@ -47,9 +47,41 @@ public class EmployeeService {
         Employee employee = optionalEmployee.get();
         return employee;
     }
-    
+
     public List<Employee> findByName(String name) {
         return this.employeeRepository.findByName(name); //nameで絞り込みを行う
+    }
+
+    // 新規登録処理
+    public Employee insert(String name, String department) {
+        // 保存したいEntityクラスのインスタンスを作成する
+        Employee employee = new Employee();
+
+        // 引数で受けたname, departmentをEmployeeオブジェクトにセットします
+        employee.setName(name);
+        employee.setDepartment(department);
+
+        // データベースに保存する
+        return this.employeeRepository.save(employee);
+    }
+
+    // 更新処理
+    public Employee update(Integer employeeId, String name, String department) {
+        // 更新したいデータを取得する
+        Optional<Employee> optionalEmployee = this.employeeRepository.findById(employeeId);
+        Employee employee = optionalEmployee.get();
+
+        // Entityクラスのフィールドに更新内容をセットする
+        employee.setName(name);
+        employee.setDepartment(department);
+
+        // データベースに保存する
+        return this.employeeRepository.save(employee);
+    }
+
+    // 削除処理
+    public void delete(Integer id) {
+        this.employeeRepository.deleteById(id);
     }
 }
 
@@ -101,4 +133,23 @@ public void test(String str1) {
     boolean bool2 = opt.isEmpty();
 }
 
+
+<データを1件保存するsave()メソッド>
+Repositoryで呼び出せるメソッドの一つで、引数には保存したいEntityを渡します。
+挿入したデータをEntityクラスとして返します。
+Entityクラスの主キーフィールドに値が設定されていなければデータの挿入が、値が設定されていればデータの更新が実行されます。
+サンプルコードの場合は、Entityクラスをあらたに作成し、id以外のフィールドを設定しているのでデータの挿入が行われます。
+IDは@GeneratedValueと@SequenceGeneratorを設定しているので、データの挿入の際に自動的に採番されます。
+
+<データの更新もできるsave()メソッド>
+save()メソッドはデータの追加時と同じですが、Entityクラスには主キーであるidが設定されている状態で呼び出されるため、データの更新が行われます。
+返り値データの挿入同様に更新した結果をEntityオブジェクトに変換し、取得できます。
+
+
+
+<データを1件削除するdeleteById()メソッド>
+JpaRepositoryを継承しているrepositoryクラスで呼び出せるメソッドの一つです。
+引数には主キーの値を渡します。
+主キーに応じたデータの削除を行います。
+返り値はvoidです。
 */
